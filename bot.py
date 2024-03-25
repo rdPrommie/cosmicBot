@@ -1,4 +1,5 @@
 import discord
+import os, sys
 from discord.ext import commands
 
 intents = discord.Intents.default()
@@ -8,9 +9,18 @@ cow_count = 20
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+fantomland_general_id = 1151188965412589662
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})')
+    channel = bot.get_channel(1151188965412589662)
+    await channel.send("Hey, cuties, i'm alive again!")
+
+@bot.event
+async def on_message(message):
+    if bot.user.mentioned_in(message):
+        await message.channel.send('Hey, ', bot.user)
 
 @bot.command()
 async def greet(ctx, name: str):
@@ -23,13 +33,21 @@ async def shutdown(ctx):
     await bot.close()
 
 @bot.command()
-async def itsworking(ctx):
+async def padoru(ctx):
     print("command itsworking has been called")
-    await ctx.send("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG43bmR1cWx0cWFja3c3a25pZ2s3cDE2NHRjejJ3b3R4cXNxMnF4bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CuMiNoTRz2bYc/giphy.gif")
+    await ctx.send("https://tenor.com/view/meme-padoru-christmas-joke-anime-gif-16368098")
 
 @bot.command()
 async def ping(ctx):
     await ctx.send("pong")
+
+def restart_bot(): 
+  os.execv(sys.executable, ['python'] + sys.argv)
+
+@bot.command(name= 'restart')
+async def restart(ctx):
+  await ctx.send("Restarting bot...")
+  restart_bot()
 
 @bot.event
 async def on_message(message):
