@@ -3,8 +3,12 @@ import os, sys
 import psutil
 import win32gui
 from discord.ext import commands
+<<<<<<< HEAD
 from mcstatus import JavaServer
 
+=======
+import requests
+>>>>>>> 9d897401a526fe77d3f11e6942898e340b80bb4c
 intents = discord.Intents.default()
 intents.message_content = True 
 
