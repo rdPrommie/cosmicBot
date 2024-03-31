@@ -1,7 +1,7 @@
 import discord
 import os, sys
 from discord.ext import commands
-
+import requests
 intents = discord.Intents.default()
 intents.message_content = True 
 
