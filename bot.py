@@ -1,9 +1,10 @@
 import discord
 import os, sys
 import psutil
-import win32gui
+import json
 from discord.ext import commands
 from mcstatus import JavaServer
+from ezgiphy import GiphyPublicAPI
 
 intents = discord.Intents.default()
 intents.message_content = True 
@@ -22,7 +23,7 @@ async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})')
     #channel = bot.get_channel(1151188965412589662)
     #await channel.send("Hey, cuties, i'm alive again!")
-    await bot.change_presence(activity=discord.Game(name="world domination"))
+    await bot.change_presence(activity=discord.Game(name="Minecraft"))
 
 @bot.event
 async def on_message(message):
@@ -62,13 +63,13 @@ def check_process(process_name):
 @bot.command(name='check_server')
 async def check_server(ctx):
     await ctx.send("Checking Fantomland server...")
-    server = JavaServer.lookup("issues-experience.joinmc.link")
+    server = JavaServer.lookup(fantomland_server_ip)
     status = server.status()
     await ctx.send("The server has {0} players and replied in {1} ms".format(status.players.online, status.latency))
 
 @bot.command(name='server_ping')
 async def server_ping(ctx):
-    server = JavaServer.lookup("issues-experience.joinmc.link")
+    server = JavaServer.lookup(fantomland_server_ip)
     await ctx.send("The server replied in {0} ms".format(server.ping()))
 
 @bot.command(name="restart_server")
@@ -82,11 +83,18 @@ async def restart_server(ctx):
 @bot.command(name="whos_playing")
 async def whos_playing(ctx):
     await ctx.send("Checking who is playing right now...")
-    server = JavaServer.lookup("issues-experience.joinmc.link")
+    server = JavaServer.lookup(fantomland_server_ip)
     if not server.query().players.names == "":
         await ctx.send("The server has the following players online: {0}".format(", ".join(server.query().players.names)))
     else:
         await ctx.send("Noone is playing right now.")
+
+@bot.command(name="cat")
+async def cat(ctx):
+    await ctx.send("CAAAAAATS!")
+    giphy = GiphyPublicAPI('K4qD7QbTgPBKvAtmJ4h9zOd4UzrjWvt6')
+    response = json.loads(giphy.random(tag='cat',rating='g')).get("data")
+    await ctx.send(response["url"])
 
 @bot.event
 async def on_message(message):
