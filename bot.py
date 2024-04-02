@@ -23,12 +23,17 @@ async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})')
     #channel = bot.get_channel(1151188965412589662)
     #await channel.send("Hey, cuties, i'm alive again!")
+    #this feature is annoying when you restart the bot alot
     await bot.change_presence(activity=discord.Game(name="Minecraft"))
 
 @bot.event
 async def on_message(message):
     if bot.user.mentioned_in(message):
         await message.channel.send('Hey, ', bot.user)
+
+@bot.command
+async def github(ctx, name="github"):
+    await ctx.send("You can review my code here: https://github.com/rdPrommie/cosmicBot")
 
 @bot.command()
 async def greet(ctx, name: str):
@@ -76,7 +81,7 @@ async def server_ping(ctx):
 async def restart_server(ctx):
     if check_process("javaw.exe"):
         await ctx.send("Restarting server. Please wait.")
-        pass
+        
     else:
         await ctx.send("I can't restart server. Please tag Prommie.")
 
@@ -114,5 +119,5 @@ async def on_message(message):
     f.write(str(cow_count))
     f.close()
 
-# Replace 'YOUR_BOT_TOKEN' with your actual bot token
-bot.run('MTE4NTU3NDgxNDYxNDgyMjkzMw.G_-fKT.OL1lb17kjeVzdO-A86Vx3CQCWCPoi19GrvsDUM')
+# I'm storing the bot token
+bot.run('')
