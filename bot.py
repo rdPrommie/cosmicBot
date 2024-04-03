@@ -31,8 +31,8 @@ async def on_message(message):
     if bot.user.mentioned_in(message):
         await message.channel.send('Hey, ', bot.user)
 
-@bot.command
-async def github(ctx, name="github"):
+@bot.command(name="github")
+async def github(ctx):
     await ctx.send("You can review my code here: https://github.com/rdPrommie/cosmicBot")
 
 @bot.command()
@@ -85,6 +85,14 @@ async def restart_server(ctx):
     else:
         await ctx.send("I can't restart server. Please tag Prommie.")
 
+@bot.command(name="runki")
+async def runki(ctx):
+    await ctx.send("https://tenor.com/view/reee-pepe-frog-angry-angery-gif-18421495")
+
+@bot.command(name="runkai")
+async def runkai(ctx):
+    await ctx.send("https://tenor.com/view/luntry-gif-26563186")
+
 @bot.command(name="whos_playing")
 async def whos_playing(ctx):
     await ctx.send("Checking who is playing right now...")
@@ -119,5 +127,5 @@ async def on_message(message):
     f.write(str(cow_count))
     f.close()
 
-# I'm storing the bot token
-bot.run('')
+# I'm storing the bot token :)
+bot.run(token = open('token.txt', 'r').read())
