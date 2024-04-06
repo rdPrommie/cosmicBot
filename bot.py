@@ -1,5 +1,6 @@
 import discord
 import os, sys
+import time
 import psutil
 import json
 from discord.ext import commands
@@ -59,7 +60,7 @@ def restart_bot():
 
 @bot.command(name= 'restart')
 async def restart(ctx):
-  await ctx.send("Restarting bot...")
+  await ctx.send("Restarting bot...")   
   restart_bot()
 
 def check_process(process_name):
@@ -69,19 +70,27 @@ def check_process(process_name):
 async def check_server(ctx):
     await ctx.send("Checking Fantomland server...")
     server = JavaServer.lookup(fantomland_server_ip)
-    status = server.status()
-    await ctx.send("The server has {0} players and replied in {1} ms".format(status.players.online, status.latency))
-
+    try:
+        status = server.status()
+        await ctx.send("The server has {0} players and replied in {1} ms".format(status.players.online, status.latency))
+    except TimeoutError:
+        await ctx.send("Tunnel is dead. Either use !s-restart or tag Prommie.")
+    
 @bot.command(name='server_ping')
 async def server_ping(ctx):
     server = JavaServer.lookup(fantomland_server_ip)
     await ctx.send("The server replied in {0} ms".format(server.ping()))
 
-@bot.command(name="restart_server")
+@bot.command(name="s-restart")
 async def restart_server(ctx):
-    if check_process("javaw.exe"):
+    if check_process("java.exe"):
         await ctx.send("Restarting server. Please wait.")
-        
+        os.system('taskkill /f /im java.exe')
+        os.startfile("C:\\Users\\Dani\\Desktop\\run.bat - Shortcut.lnk")
+        await ctx.send("Server is starting... Please wait 60 seconds.")
+        time.sleep(60)
+        server = JavaServer.lookup(fantomland_server_ip)
+        await ctx.send("Server is up! Ping: {0}".format(server.status.latency))
     else:
         await ctx.send("I can't restart server. Please tag Prommie.")
 
