@@ -79,7 +79,6 @@ async def restart(ctx):
     restart_bot()
 
 def check_process(process_name):
-    get_who_called(ctx, "check_process")
     return process_name in (p.name() for p in psutil.process_iter())
 
 @bot.command(name='check_server')
@@ -179,6 +178,7 @@ async def cat(ctx):
 @bot.event
 async def on_message(message):
     global cat_count
+    global cow_count
 
     if 'cat' in message.content.lower().translate(":") and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
@@ -189,12 +189,11 @@ async def on_message(message):
         response = f'pimo has eaten {cat_count} cats'
         await message.channel.send(response)
 
-    await bot.process_commands(message)
-    f = open("cat_count.txt", "w")
-    f.write(str(cat_count))
-    f.close()
+        f = open("cat_count.txt", "w")
+        f.write(str(cat_count))
+        f.close()
 
-    global cow_count
+    
 
     if 'cow' in message.content.lower().translate(":") and message.author != bot.user:
         cow_mentions = message.content.lower().count('cow')
@@ -205,10 +204,12 @@ async def on_message(message):
         response = f'prommie has eaten {cow_count} cows'
         await message.channel.send(response)
 
+    
+        f = open("cow_count.txt", "w")
+        f.write(str(cow_count))
+        f.close()
+
     await bot.process_commands(message)
-    f = open("cow_count.txt", "w")
-    f.write(str(cow_count))
-    f.close()
 
 # I'm storing the bot token :)
 bot.run(token = open('token.txt', 'r').read())
