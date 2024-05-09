@@ -184,13 +184,13 @@ async def on_message(message):
     global cat_count
     global cow_count
 
-    if 'cat' in message.content.lower() and message.author == "pimounantra" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
+    if 'cat' in message.content.lower() and str(message.author) == "pimounantra" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
         
         cat_count += 1 * cat_mentions
         
 
-        response = f'pimo has mentioned {cat_count} cats so far'
+        response = f'pimo has mentioned cats {cat_count} times so far'
         await message.channel.send(response)
 
         f = open("cat_count.txt", "w")
