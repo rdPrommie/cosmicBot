@@ -199,7 +199,7 @@ async def on_message(message):
 
     
 
-    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\cow\b', message.content.lower()):
+    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bcow\b', message.content.lower()):
         cow_mentions = message.content.lower().count('cow')
 
         cow_count += 1 * cow_mentions
