@@ -184,7 +184,7 @@ async def on_message(message):
     global cat_count
     global cow_count
 
-    if 'cat' in message.content.lower() and message.author == "pimounantra" and re.search(r'\bcat|cats\b', message.content.lower()) and message.author != bot.user:
+    if 'cat' in message.content.lower() and message.author == "pimounantra" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
         
         cat_count += 1 * cat_mentions
@@ -199,7 +199,7 @@ async def on_message(message):
 
     
 
-    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\cow|cows\b', message.content.lower()):
+    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\cow\b', message.content.lower()):
         cow_mentions = message.content.lower().count('cow')
 
         cow_count += 1 * cow_mentions
