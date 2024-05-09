@@ -1,5 +1,5 @@
 import discord
-import os, sys
+import os, sys, re
 import time, datetime
 import psutil
 import json
@@ -156,6 +156,10 @@ async def cherry(ctx):
 async def cres(ctx):
     get_who_called(ctx, "cres")
     await ctx.send("https://tenor.com/view/saltobears-gif-19924022")
+    
+@bot.command(name="ban")
+async def ban(ctx):
+    await ctx.send(f"{ctx.author.mention}https://tenor.com/view/bongocat-banhammer-ban-hammer-bongo-gif-18219363")
 
 @bot.command(name="whos_playing")
 async def whos_playing(ctx):
@@ -180,13 +184,13 @@ async def on_message(message):
     global cat_count
     global cow_count
 
-    if 'cat' in message.content.lower().translate(":") and message.author != bot.user:
+    if 'cat' in message.content.lower() and message.author == "pimounantra" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
-
+        
         cat_count += 1 * cat_mentions
         
 
-        response = f'pimo has eaten {cat_count} cats'
+        response = f'pimo has mentioned {cat_count} cats so far'
         await message.channel.send(response)
 
         f = open("cat_count.txt", "w")
@@ -195,13 +199,13 @@ async def on_message(message):
 
     
 
-    if 'cow' in message.content.lower().translate(":") and message.author != bot.user:
+    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bcow\b', message.content.lower()):
         cow_mentions = message.content.lower().count('cow')
 
         cow_count += 1 * cow_mentions
         
 
-        response = f'prommie has eaten {cow_count} cows'
+        response = f'prommie has eaten {cow_count} cows and counting'
         await message.channel.send(response)
 
     
