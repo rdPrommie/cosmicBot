@@ -35,7 +35,7 @@ async def on_ready():
     #channel = bot.get_channel(1151188965412589662)
     #await channel.send("Hey, cuties, i'm alive again!")
     #this feature is annoying when you restart the bot alot
-    await bot.change_presence(activity=discord.Game(name="Minecraft"))
+    await bot.change_presence(activity=discord.Game(name="Path of Exile"))
 
 @bot.event
 async def on_message(message):
@@ -156,6 +156,17 @@ async def cherry(ctx):
 async def cres(ctx):
     get_who_called(ctx, "cres")
     await ctx.send("https://tenor.com/view/saltobears-gif-19924022")
+    
+@bot.command(name="dust")
+async def dust(ctx):
+    get_who_called(ctx, "dust")
+    await ctx.send("https://tenor.com/tXdtvvyGWqz.gif")
+
+
+@bot.command(name="pengy")
+async def pengy(ctx):
+    get_who_called(ctx, "pengy")
+    await ctx.send("https://tenor.com/view/charge-penguin-highway-gif-21457682")
     
 @bot.command(name="ban")
 async def ban(ctx):
