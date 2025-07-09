@@ -222,6 +222,7 @@ async def on_message(message):
     global cat_count
     global cow_count
     global bored_count
+    global sigh_count
     
     
     #pimo cat counter
@@ -240,12 +241,11 @@ async def on_message(message):
         
     
     #pengy bored counter
-    if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\bbore\bd\b', message.content.lower()) and message.author != bot.user:
+    if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\bbored\b', message.content.lower()) and message.author != bot.user:
         bored_mentions = message.content.lower().count('bored')
         
         bored_count += 1 * bored_mentions
         
-
         response = f'Pengy has been bored {bored_count} times so far'
         await message.channel.send(response)
 
@@ -258,7 +258,6 @@ async def on_message(message):
         sigh_mentions = message.content.lower().count('sigh')
         
         sigh_count += 1 * sigh_mentions
-        
 
         response = f'Cres has sighed {sigh_count} times so far'
         await message.channel.send(response)
@@ -266,6 +265,9 @@ async def on_message(message):
         f = open("sigh_count.txt", "w")
         f.write(str(sigh_count))
         f.close()
+        
+    # prommie 173108969118760962
+    # cres 420597874812780555
         
     
     #prommie is a cow counter
