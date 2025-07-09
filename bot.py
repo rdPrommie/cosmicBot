@@ -13,7 +13,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 fantomland_general_id = 1151188965412589662
-fantomland_server_ip = "ready-motors.joinmc.link"
+fantomland_server_ip = "ready-motors.joinmc.link" # OUTDATED SERVER ADDRESS
 
 f = open("cow_count.txt", "r")
 cow_count = int(f.read())
@@ -21,6 +21,14 @@ f.close()
 
 f = open("cat_count.txt", "r")
 cat_count = int(f.read())
+f.close()
+
+f = open("bored_count.txt", "r")
+bored_count = int(f.read())
+f.close()
+
+f = open("sigh_count.txt", "r")
+sigh_count = int(f.read())
 f.close()
 
 def get_now_time():
@@ -83,6 +91,10 @@ def check_process(process_name):
 
 @bot.command(name='check_server')
 async def check_server(ctx):
+    await ctx.send("The Minecraft server has been shut down indefinetly. Idk when we are going to set it up again. Sorry.")
+
+"""@bot.command(name='check_server')
+async def check_server(ctx):
     get_who_called(ctx, "check_server")
     await ctx.send("Checking Fantomland server...")
     server = JavaServer.lookup(fantomland_server_ip)
@@ -90,15 +102,15 @@ async def check_server(ctx):
         status = server.status()
         await ctx.send("The server has {0} players and replied in {1} ms".format(status.players.online, status.latency))
     except TimeoutError:
-        await ctx.send("Tunnel is dead. Either use !s-restart or tag Prommie.")
+        await ctx.send("Tunnel is dead. Either use !s-restart or tag Prommie.")"""
     
-@bot.command(name='server_ping')
+"""@bot.command(name='server_ping')
 async def server_ping(ctx):
     get_who_called(ctx, "server_ping")
     server = JavaServer.lookup(fantomland_server_ip)
-    await ctx.send("The server replied in {0} ms".format(server.ping()))
+    await ctx.send("The server replied in {0} ms".format(server.ping()))"""
 
-@bot.command(name="s-restart")
+"""@bot.command(name="s-restart")
 async def restart_server(ctx):
     get_who_called(ctx, "s-restart")
     if check_process("java.exe"):
@@ -110,7 +122,7 @@ async def restart_server(ctx):
         server = JavaServer.lookup(fantomland_server_ip)
         await ctx.send("Server is up! Ping: {0}".format(server.status.latency))
     else:
-        await ctx.send("I can't restart server. Please tag Prommie.")
+        await ctx.send("I can't restart server. Please tag Prommie.")"""
 
 @bot.command(name="runki")
 async def runki(ctx):
@@ -152,6 +164,11 @@ async def cherry(ctx):
     get_who_called(ctx, "cherry")
     await ctx.send("https://tenor.com/view/peepo-peepoleave-gif-20075315")
 
+@bot.command(name="cherryfast")
+async def cherryfast(ctx):
+    get_who_called(ctx, "cherryfast")
+    await ctx.send("https://tenor.com/by9Zs.gif")
+
 @bot.command(name="cres")
 async def cres(ctx):
     get_who_called(ctx, "cres")
@@ -161,6 +178,16 @@ async def cres(ctx):
 async def dust(ctx):
     get_who_called(ctx, "dust")
     await ctx.send("https://tenor.com/tXdtvvyGWqz.gif")
+
+@bot.command(name="gay")
+async def gay(ctx):
+    get_who_called(ctx, "gay")
+    await ctx.send("https://media1.tenor.com/images/bd0db1b5fe2cf233439a0758c5b12186/tenor.gif?itemid=12334071")
+
+@bot.command(name="retard")
+async def retard(ctx):
+    get_who_called(ctx, "retard")
+    await ctx.send("https://media.tenor.com/-OoOt1G8q-AAAAAC/gordo-no.gif")
 
 
 @bot.command(name="pengy")
@@ -194,7 +221,10 @@ async def cat(ctx):
 async def on_message(message):
     global cat_count
     global cow_count
-
+    global bored_count
+    
+    
+    #pimo cat counter
     if 'cat' in message.content.lower() and str(message.author.id) == "567731558153453570" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
         
@@ -207,9 +237,38 @@ async def on_message(message):
         f = open("cat_count.txt", "w")
         f.write(str(cat_count))
         f.close()
-
+        
     
+    #pengy bored counter
+    if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\bbore\bd\b', message.content.lower()) and message.author != bot.user:
+        bored_mentions = message.content.lower().count('bored')
+        
+        bored_count += 1 * bored_mentions
+        
 
+        response = f'Pengy has been bored {bored_count} times so far'
+        await message.channel.send(response)
+
+        f = open("bored_count.txt", "w")
+        f.write(str(bored_count))
+        f.close()
+    
+    #cres sigh counter
+    if 'sigh' in message.content.lower() and str(message.author.id) == "420597874812780555" and re.search(r'\bsigh\b', message.content.lower()) and message.author != bot.user:
+        sigh_mentions = message.content.lower().count('sigh')
+        
+        sigh_count += 1 * sigh_mentions
+        
+
+        response = f'Cres has sighed {sigh_count} times so far'
+        await message.channel.send(response)
+
+        f = open("sigh_count.txt", "w")
+        f.write(str(sigh_count))
+        f.close()
+        
+    
+    #prommie is a cow counter
     if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bcow\b', message.content.lower()):
         cow_mentions = message.content.lower().count('cow')
 
