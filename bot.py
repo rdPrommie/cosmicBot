@@ -177,7 +177,7 @@ async def cres(ctx):
 @bot.command(name="dust")
 async def dust(ctx):
     get_who_called(ctx, "dust")
-    await ctx.send("https://tenor.com/tXdtvvyGWqz.gif")
+    await ctx.send("https://tenor.com/view/peachvitty-gif-24343442")
 
 @bot.command(name="gay")
 async def gay(ctx):
