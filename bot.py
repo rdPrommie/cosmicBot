@@ -3,6 +3,7 @@ import os, sys, re
 import time, datetime
 import psutil
 import json
+import platform, subprocess
 from discord.ext import commands
 from mcstatus import JavaServer
 from ezgiphy import GiphyPublicAPI
@@ -15,21 +16,20 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 fantomland_general_id = 1151188965412589662
 fantomland_server_ip = "ready-motors.joinmc.link" # OUTDATED SERVER ADDRESS
 
-f = open("cow_count.txt", "r")
-cow_count = int(f.read())
-f.close()
+with open('counters.json', 'r') as file:
+    counter_data = json.load(file)
+    cow_count = counter_data["counters"]["cow"]
+    cat_count = counter_data["counters"]["cat"]
+    bored_count = counter_data["counters"]["bored"]
+    sigh_count = counter_data["counters"]["sigh"]
 
-f = open("cat_count.txt", "r")
-cat_count = int(f.read())
-f.close()
+def ping_server(host):
+    # returns True is host responds to a ping request
+    # please make sure if the host name is valid smh
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+    command = ['ping', param, '1', host]
 
-f = open("bored_count.txt", "r")
-bored_count = int(f.read())
-f.close()
-
-f = open("sigh_count.txt", "r")
-sigh_count = int(f.read())
-f.close()
+    return subprocess.call(command) == 0
 
 def get_now_time():
     return datetime.datetime.now()
@@ -92,37 +92,6 @@ def check_process(process_name):
 @bot.command(name='check_server')
 async def check_server(ctx):
     await ctx.send("The Minecraft server has been shut down indefinetly. Idk when we are going to set it up again. Sorry.")
-
-"""@bot.command(name='check_server')
-async def check_server(ctx):
-    get_who_called(ctx, "check_server")
-    await ctx.send("Checking Fantomland server...")
-    server = JavaServer.lookup(fantomland_server_ip)
-    try:
-        status = server.status()
-        await ctx.send("The server has {0} players and replied in {1} ms".format(status.players.online, status.latency))
-    except TimeoutError:
-        await ctx.send("Tunnel is dead. Either use !s-restart or tag Prommie.")"""
-    
-"""@bot.command(name='server_ping')
-async def server_ping(ctx):
-    get_who_called(ctx, "server_ping")
-    server = JavaServer.lookup(fantomland_server_ip)
-    await ctx.send("The server replied in {0} ms".format(server.ping()))"""
-
-"""@bot.command(name="s-restart")
-async def restart_server(ctx):
-    get_who_called(ctx, "s-restart")
-    if check_process("java.exe"):
-        await ctx.send("Restarting server. Please wait.")
-        os.system('taskkill /f /im java.exe')
-        os.startfile("C:\\Users\\Mozigépész\\Desktop\\run.lnk")
-        await ctx.send("Server is starting... Please wait 60 seconds.")
-        time.sleep(60)
-        server = JavaServer.lookup(fantomland_server_ip)
-        await ctx.send("Server is up! Ping: {0}".format(server.status.latency))
-    else:
-        await ctx.send("I can't restart server. Please tag Prommie.")"""
 
 @bot.command(name="runki")
 async def runki(ctx):
@@ -202,12 +171,16 @@ async def ban(ctx):
 @bot.command(name="whos_playing")
 async def whos_playing(ctx):
     get_who_called(ctx, "who_playing")
-    await ctx.send("Checking who is playing right now...")
-    server = JavaServer.lookup(fantomland_server_ip)
-    if not server.query().players.names == "":
-        await ctx.send("The server has the following players online: {0}".format(", ".join(server.query().players.names)))
+    if ping_server(fantomland_server_ip):
+        await ctx.send("Checking who is playing right now...")
+        server = JavaServer.lookup(fantomland_server_ip)
+        if not server.query().players.names == "":
+            await ctx.send("The server has the following players online: {0}".format(", ".join(server.query().players.names)))
+        else:
+            await ctx.send("Noone is playing right now.")
     else:
-        await ctx.send("Noone is playing right now.")
+        await ctx.send("No Minecraft server is running at the moment.")
+    
 
 @bot.command(name="cat")
 async def cat(ctx):
@@ -235,43 +208,36 @@ async def on_message(message):
         response = f'pimo has mentioned cats {cat_count} times so far'
         await message.channel.send(response)
 
-        f = open("cat_count.txt", "w")
-        f.write(str(cat_count))
-        f.close()
+        counter_data['counters']['cat'] = cat_count
         
     
     #pengy bored counter
     if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\bbored\b', message.content.lower()) and message.author != bot.user:
-        bored_mentions = message.content.lower().count('bored')
+        bored_mentions = message.content.lower().count('bo+red')
         
         bored_count += 1 * bored_mentions
         
         response = f'Pengy has been bored {bored_count} times so far'
         await message.channel.send(response)
 
-        f = open("bored_count.txt", "w")
-        f.write(str(bored_count))
-        f.close()
+        counter_data['counters']['bored'] = bored_count
     
     #cres sigh counter
-    if 'sigh' in message.content.lower() and str(message.author.id) == "420597874812780555" and re.search(r'\bsigh\b', message.content.lower()) and message.author != bot.user:
-        sigh_mentions = message.content.lower().count('sigh')
+    if 'sigh' in message.content.lower() and str(message.author.id) == "420597874812780555" and re.search(r'\bsi+gh\b', message.content.lower()) and message.author != bot.user:
+        sigh_mentions = message.content.lower().count('si+gh')
         
         sigh_count += 1 * sigh_mentions
 
         response = f'Cres has sighed {sigh_count} times so far'
         await message.channel.send(response)
 
-        f = open("sigh_count.txt", "w")
-        f.write(str(sigh_count))
-        f.close()
+        counter_data['counters']['sigh'] = sigh_count
         
     # prommie 173108969118760962
     # cres 420597874812780555
-        
-    
+          
     #prommie is a cow counter
-    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bcow\b', message.content.lower()):
+    if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bc+ow\b', message.content.lower()):
         cow_mentions = message.content.lower().count('cow')
 
         cow_count += 1 * cow_mentions
@@ -281,9 +247,10 @@ async def on_message(message):
         await message.channel.send(response)
 
     
-        f = open("cow_count.txt", "w")
-        f.write(str(cow_count))
-        f.close()
+        counter_data['counters']['cow'] = cow_count
+
+    with open('counters.json', 'w') as file:
+        json.dump(counter_data, file)
 
     await bot.process_commands(message)
 
