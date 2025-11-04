@@ -5,7 +5,7 @@ import psutil
 import json
 import platform, subprocess
 from discord.ext import commands
-from mcstatus import JavaServer
+# from mcstatus import JavaServer TODO: deprecated
 from ezgiphy import GiphyPublicAPI
 
 intents = discord.Intents.default()
@@ -199,7 +199,7 @@ async def on_message(message):
     
     
     #pimo cat counter
-    if 'cat' in message.content.lower() and str(message.author.id) == "567731558153453570" and re.search(r'\bcat\b', message.content.lower()) and message.author != bot.user:
+    if 'cat' in message.content.lower() and str(message.author.id) == "567731558153453570" and re.search(r'\b[cC]+[a@]+[t7]+[!.\-~]*\b', message.content.lower()) and message.author != bot.user:
         cat_mentions = message.content.lower().count('cat')
         
         cat_count += 1 * cat_mentions
@@ -212,8 +212,8 @@ async def on_message(message):
         
     
     #pengy bored counter
-    if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\bbored\b', message.content.lower()) and message.author != bot.user:
-        bored_mentions = message.content.lower().count('bo+red')
+    if 'bored' in message.content.lower() and str(message.author.id) == "338630349087309826" and re.search(r'\b[bB]+[oua]*r*[e3]*d+[!.\-~]*\b', message.content.lower()) and message.author != bot.user:
+        bored_mentions = message.content.lower().count('bored')
         
         bored_count += 1 * bored_mentions
         
@@ -223,8 +223,8 @@ async def on_message(message):
         counter_data['counters']['bored'] = bored_count
     
     #cres sigh counter
-    if 'sigh' in message.content.lower() and str(message.author.id) == "420597874812780555" and re.search(r'\bsi+gh\b', message.content.lower()) and message.author != bot.user:
-        sigh_mentions = message.content.lower().count('si+gh')
+    if 'sigh' in message.content.lower() and str(message.author.id) == "420597874812780555" and re.search(r'\b[sS]+[i1y!]+[gq]+[hH]+[!.\-~]*\b', message.content.lower()) and message.author != bot.user:
+        sigh_mentions = message.content.lower().count('sigh')
         
         sigh_count += 1 * sigh_mentions
 
@@ -234,7 +234,6 @@ async def on_message(message):
         counter_data['counters']['sigh'] = sigh_count
         
     # prommie 173108969118760962
-    # cres 420597874812780555
           
     #prommie is a cow counter
     if 'cow' in message.content.lower() and message.author != bot.user and re.search(r'\bc+ow\b', message.content.lower()):
