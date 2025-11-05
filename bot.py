@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})')
-    await bot.change_presence(activity=discord.Game(name="Path of Exile"))
+    await bot.change_presence(activity=discord.Game(name="It's Fantoming time"))
 
 async def load_cogs():
     for filename in os.listdir('./cogs'):
